@@ -44,11 +44,18 @@ public class Game
         office = new Room("in the computing admin office");
         
         // initialise room exits
-        outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
+        outside.setExit("East", theater);
+        outside.setExit("South", lab);
+        outside.setExit("West", pub);
+
+        theater.setExit("West", outside);
+
+        pub.setExit("East", outside);
+
+        lab.setExit("North", outside);
+        lab.setExit("East", office);
+
+        office.setExit("West", lab);
 
         currentRoom = outside;  // start game outside
     }
@@ -81,8 +88,8 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-
-        printLocationInfo();
+        System.out.println(currentRoom.getLongerDescription());
+        System.out.println();
     }
 
     /**
@@ -140,19 +147,21 @@ public class Game
             System.out.println("Go where?");
             return;
         }
+
         String direction = command.getSecondWord();
 
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
         currentRoom = nextRoom;
-        printLocationInfo();
+            System.out.println(currentRoom.getDescription());
     }
-    /**
+
+    /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
      * @return true, if this command quits the game, false otherwise.
      */
-    private boolean quit(Command command)
+    private boolean quit(Command command) 
     {
         if(command.hasSecondWord()) {
             System.out.println("Quit what?");
@@ -162,13 +171,4 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
-    private void printLocationInfo() {
-        System.out.println("You are " + currentRoom.getLongDescription());
-        currentRoom.getExitString();
-    }
-    private void look()
-    {
-        System.out.println(currentRoom.getLongDescription());
-    }
-
 }
