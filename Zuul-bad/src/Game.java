@@ -163,7 +163,7 @@ public class Game
         }
     }
     private void printLocationInfo() {
-        System.out.println("Você está " + currentRoom.getLongDescription());
+        System.out.println("You are " + currentRoom.getLongDescription());
         currentRoom.getExitString();
     }
     private void look()
