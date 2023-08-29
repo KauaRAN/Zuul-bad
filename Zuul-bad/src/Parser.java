@@ -51,9 +51,7 @@ public class Parser
                 word2 = tokenizer.next();      // get second word
                 // note: we just ignore the rest of the input line.
             }
-            tokenizer.close();
         }
-        
 
         // Now check whether this word is known. If so, create a command
         // with it. If not, create a "null" command (for unknown command).
@@ -63,5 +61,9 @@ public class Parser
         else {
             return new Command(null, word2); 
         }
+    }
+    public void showCommands()
+    {
+        commands.showAll();
     }
 }
