@@ -1,4 +1,4 @@
-/**
+    /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
  *  can walk around some scenery. That's all. It should really be extended 
@@ -158,7 +158,12 @@ public class Game
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
         currentRoom = nextRoom;
-        printLocationInfo();
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else{
+            printLocationInfo();
+        }
     }
     /**
      * "Quit" was entered. Check the rest of the command to see
