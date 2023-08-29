@@ -3,27 +3,27 @@
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
  *  can walk around some scenery. That's all. It should really be extended 
  *  to make it more interesting!
- * 
+ *
  *  To play this game, create an instance of this class and call the "play"
  *  method.
- * 
+ *
  *  This main class creates and initialises all the others: it creates all
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
- * 
+ *
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
  */
 
-public class Game 
+public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+
     /**
      * Create the game and initialise its internal map.
      */
-    public Game() 
+    public Game()
     {
         createRooms();
         parser = new Parser();
@@ -35,27 +35,27 @@ public class Game
     private void createRooms()
     {
         Room outside, theater, pub, lab, office;
-      
+
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         theater = new Room("in a lecture theater");
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
-        
+
         // initialise room exits
-        outside.setExit("East", theater);
-        outside.setExit("South", lab);
-        outside.setExit("West", pub);
+        outside.setExit("east", theater);
+        outside.setExit("south", lab);
+        outside.setExit("west", pub);
 
-        theater.setExit("West", outside);
+        theater.setExit("west", outside);
 
-        pub.setExit("East", outside);
+        pub.setExit("east", outside);
 
-        lab.setExit("North", outside);
-        lab.setExit("East", office);
+        lab.setExit("north", outside);
+        lab.setExit("east", office);
 
-        office.setExit("West", lab);
+        office.setExit("west", lab);
 
         currentRoom = outside;  // start game outside
     }
@@ -63,13 +63,13 @@ public class Game
     /**
      *  Main play routine.  Loops until end of play.
      */
-    public void play() 
-    {            
+    public void play()
+    {
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -97,7 +97,7 @@ public class Game
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) 
+    private boolean processCommand(Command command)
     {
         boolean wantToQuit = false;
 
@@ -119,6 +119,9 @@ public class Game
         else if(commandWord.equals("look")) {
             look();
         }
+        else if(commandWord.equals("eat")) {
+            eat();
+        }
 
         return wantToQuit;
     }
@@ -127,19 +130,19 @@ public class Game
 
     /**
      * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
+     * Here we print some stupid, cryptic message and a list of the
      * command words.
      */
-    private void printHelp() 
+    private void printHelp()
     {
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("   go quit help");
+        parser.showCommands();
     }
 
-    /** 
+    /**
      * Try to go in one direction. If there is an exit, enter
      * the new room, otherwise print an error message.
      */
@@ -173,12 +176,14 @@ public class Game
         }
     }
     private void printLocationInfo() {
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.println(currentRoom.getExitString());
+        System.out.println(currentRoom.getLongDescription());
     }
     private void look()
     {
         System.out.println(currentRoom.getLongDescription());
+    }
+    private void eat(){
+        System.out.println("You have eaten now and you are not hungry any more.");
     }
 
 }
